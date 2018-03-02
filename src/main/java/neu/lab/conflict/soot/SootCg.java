@@ -12,7 +12,7 @@ import java.util.Set;
 import neu.lab.conflict.Conf;
 import neu.lab.conflict.graph.Graph;
 import neu.lab.conflict.graph.Node;
-import neu.lab.conflict.risk.NodeRiskAna;
+import neu.lab.conflict.risk.NodeCg;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
@@ -41,7 +41,7 @@ public class SootCg extends SootAna {
 		return instance;
 	}
 
-	public void cmpCg(NodeRiskAna nodeAnaUnit) {
+	public void cmpCg(NodeCg nodeAnaUnit) {
 		MavenUtil.i().getLog().info("use soot to compute reach methods for " + nodeAnaUnit.toString());
 
 		try {
@@ -84,7 +84,7 @@ public class SootCg extends SootAna {
 
 class CgTf extends SceneTransformer {
 
-	private NodeRiskAna nodeRiskAna;
+	private NodeCg nodeRiskAna;
 	private Set<String> entryClses;
 	private Set<String> conflictJarClses;// classes in duplicated jar
 
@@ -99,7 +99,7 @@ class CgTf extends SceneTransformer {
 	// private List<MethodCall> riskCalls;// source is from other jar,target is to
 	// risk1Mthds.
 
-	public CgTf(NodeRiskAna nodeRiskAna) throws Exception {
+	public CgTf(NodeCg nodeRiskAna) throws Exception {
 		super();
 		this.nodeRiskAna = nodeRiskAna;
 		this.rchMthds = new HashSet<String>();

@@ -1,21 +1,37 @@
 package neu.lab.conflict.statics;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import neu.lab.conflict.risk.DepJarCg;
+import neu.lab.conflict.risk.DepJarCgs;
+import neu.lab.conflict.risk.DupClsJarPairRisk;
+import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.ClassVO;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.MethodVO;
 
-public class JarCmp {
+/**
+ * two jar that have different name and same class.
+ * 
+ * @author asus
+ *
+ */
+public class DupClsJarPair {
 	private DepJar jar1;
 	private DepJar jar2;
-	private List<String> clsSigs;
+	private Set<String> clsSigs;
 
-	public JarCmp(DepJar jarA, DepJar jarB) {
+	public DupClsJarPair(DepJar jarA, DepJar jarB) {
 		jar1 = jarA;
 		jar2 = jarB;
-		clsSigs = new ArrayList<String>();
+		clsSigs = new HashSet<String>();
+	}
+
+	public boolean isInDupCls(String rhcedMthd) {
+		return clsSigs.contains(SootUtil.mthdSig2cls(rhcedMthd));
 	}
 
 	public void addClass(String clsSig) {
@@ -67,6 +83,10 @@ public class JarCmp {
 			}
 		}
 		return onlyMthds;
+	}
+
+	public DupClsJarPairRisk getPairRisk(DepJarCgs jarCgs) {
+		return new DupClsJarPairRisk(this, jarCgs.getDepJarCg(getJar1()), jarCgs.getDepJarCg(getJar2()));
 	}
 
 	// @Override

@@ -17,6 +17,10 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.SourceLocator;
 
+/**
+ * @author asus
+ *
+ */
 public class SootUtil {
 	public static void modifyLogOut() {
 		File outDir = MavenUtil.i().getBuildDir();
@@ -36,10 +40,19 @@ public class SootUtil {
 	 *            getLevel()>
 	 * @return eg.: org.slf4j.event.Level getLevel();
 	 */
-	public static String mthdSig2Name(String mthdSig) {
+	public static String mthdSig2name(String mthdSig) {
 		return mthdSig.substring(mthdSig.indexOf(":") + 1, mthdSig.indexOf(")") + 1);
 	}
 
+	/**
+	 * @param mthdSig
+	 *            eg.:<org.slf4j.event.SubstituteLoggingEvent: org.slf4j.event.Level
+	 *            getLevel()>
+	 * @return eg.:org.slf4j.event.SubstituteLoggingEvent
+	 */
+	public static String mthdSig2cls(String mthdSig) {
+		return mthdSig.substring(1, mthdSig.indexOf(":"));
+	}
 	public static List<String> getJarClasses(DepJar depJar) {
 		return getJarClasses(depJar.getClassPath());
 	}
@@ -48,9 +61,9 @@ public class SootUtil {
 		List<String> allCls = new ArrayList<String>();
 		for (String classPath : paths) {
 			if (new File(classPath).exists()) {
-				if (!classPath.endsWith("tar.gz")&&!classPath.endsWith(".pom")&&!classPath.endsWith(".war")) {
+				if (!classPath.endsWith("tar.gz") && !classPath.endsWith(".pom") && !classPath.endsWith(".war")) {
 					allCls.addAll(SourceLocator.v().getClassesUnder(classPath));
-				}else {
+				} else {
 					MavenUtil.i().getLog().warn(classPath + "is illegal classpath");
 				}
 			} else {
@@ -60,8 +73,8 @@ public class SootUtil {
 		}
 		return allCls;
 	}
-	
-	public static Map<String, ClassVO> getClassTb(List<String> jarPaths){
+
+	public static Map<String, ClassVO> getClassTb(List<String> jarPaths) {
 		Map<String, ClassVO> clsTb = new HashMap<String, ClassVO>();
 		for (String clsSig : SootUtil.getJarClasses(jarPaths)) {
 			SootClass sootClass = Scene.v().getSootClass(clsSig);
@@ -82,6 +95,7 @@ public class SootUtil {
 		}
 		return clsTb;
 	}
+
 	public static boolean isSimpleCls(SootClass sootClass) {
 		for (SootMethod sootMethod : sootClass.getMethods()) {
 			if (sootMethod.isConstructor() && sootMethod.getParameterCount() == 0) // exist constructor that doesn't

@@ -62,7 +62,7 @@ public class Node {
 		if (outNds != null) {
 
 			for (String mthdSig : outNds) {
-				String mthdName = SootUtil.mthdSig2Name(mthdSig);
+				String mthdName = SootUtil.mthdSig2name(mthdSig);
 				Integer cnt = result.get(mthdName);
 				if (null == cnt) {
 					result.put(mthdName, new Integer(1));

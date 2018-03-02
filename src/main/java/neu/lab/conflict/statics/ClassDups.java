@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.DepJar;
-import soot.SourceLocator;
 
 public class ClassDups {
 	private List<ClassDup> container;

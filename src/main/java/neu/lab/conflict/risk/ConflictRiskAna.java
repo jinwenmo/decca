@@ -15,7 +15,7 @@ import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.NodeConflict;
 
 public class ConflictRiskAna {
-	private List<JarRiskAna> jarRiskAnas;
+	private List<DepJarCg> jarRiskAnas;
 	private NodeConflict nodeConflict;
 
 	private Set<String> rchedMthds;// reached method in call-graph computed(entry class is host class)
@@ -31,11 +31,11 @@ public class ConflictRiskAna {
 		this.nodeConflict = nodeConflict;
 	}
 
-	public List<JarRiskAna> getJarRiskAnas() {
+	public List<DepJarCg> getJarRiskAnas() {
 		return jarRiskAnas;
 	}
 
-	private void setJarRiskAnas(List<JarRiskAna> jarRiskAnas) {
+	private void setJarRiskAnas(List<DepJarCg> jarRiskAnas) {
 		this.jarRiskAnas = jarRiskAnas;
 	}
 
@@ -44,7 +44,7 @@ public class ConflictRiskAna {
 		sb.append(nodeConflict.toString() + "\n");
 		sb.append("reached size: " + getRchedMthds().size() + " reached_thrown size:" + getRisk1Mthds().size()
 				+ " reached_thrown_service:" + getRisk2Mthds().size() + "\n");
-		for (JarRiskAna jarRiskAna : getJarRiskAnas()) {
+		for (DepJarCg jarRiskAna : getJarRiskAnas()) {
 			sb.append(jarRiskAna.getRiskString());
 			sb.append("\n");
 		}
@@ -92,7 +92,7 @@ public class ConflictRiskAna {
 		Set<String> jarMthdSigs = jar.getAllMthd();
 		Set<String> jarMthdNames = new HashSet<String>();
 		for (String methodSig : jarMthdSigs) {
-			jarMthdNames.add(SootUtil.mthdSig2Name(methodSig));
+			jarMthdNames.add(SootUtil.mthdSig2name(methodSig));
 		}
 
 		FourNum fourNum = new FourNum();
@@ -127,7 +127,7 @@ public class ConflictRiskAna {
 	public static ConflictRiskAna getConflictRiskAna(NodeConflict nodeConflict) {
 		MavenUtil.i().getLog().info("risk ana for:" + nodeConflict.toString());
 		ConflictRiskAna riskAna = new ConflictRiskAna(nodeConflict);
-		List<JarRiskAna> jarRiskAnas = new ArrayList<JarRiskAna>();
+		List<DepJarCg> jarRiskAnas = new ArrayList<DepJarCg>();
 		for (DepJar depJar : nodeConflict.getDepJars()) {
 			jarRiskAnas.add(depJar.getJarRiskAna(getClsTb(nodeConflict)));
 		}
@@ -145,7 +145,7 @@ public class ConflictRiskAna {
 	public Set<String> getRchedMthds() {
 		if (rchedMthds == null) {
 			rchedMthds = new HashSet<String>();
-			for (JarRiskAna jarRiskAna : getJarRiskAnas()) {
+			for (DepJarCg jarRiskAna : getJarRiskAnas()) {
 				rchedMthds.addAll(jarRiskAna.getRchedMthds());
 			}
 		}
@@ -155,7 +155,7 @@ public class ConflictRiskAna {
 	public Set<String> getRchedServices() {
 		if (rchedServices == null) {
 			rchedServices = new HashSet<String>();
-			for (JarRiskAna jarRiskAna : getJarRiskAnas()) {
+			for (DepJarCg jarRiskAna : getJarRiskAnas()) {
 				rchedServices.addAll(jarRiskAna.getRchedServices());
 			}
 		}
@@ -180,7 +180,7 @@ public class ConflictRiskAna {
 		if (null == rchedMthdNames) {
 			rchedMthdNames = new HashSet<String>();
 			for (String methodSig : getRchedMthds()) {
-				rchedMthdNames.add(SootUtil.mthdSig2Name(methodSig));
+				rchedMthdNames.add(SootUtil.mthdSig2name(methodSig));
 			}
 		}
 		return rchedMthdNames;
@@ -190,7 +190,7 @@ public class ConflictRiskAna {
 		if (null == rchedServiceNames) {
 			rchedServiceNames = new HashSet<String>();
 			for (String methodSig : getRchedServices()) {
-				rchedServiceNames.add(SootUtil.mthdSig2Name(methodSig));
+				rchedServiceNames.add(SootUtil.mthdSig2name(methodSig));
 			}
 		}
 		return rchedServiceNames;

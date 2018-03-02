@@ -21,7 +21,7 @@ import java.util.Map;
  * @author asus
  *
  */
-public class JarRiskAna {
+public class DepJarCg {
 
 	private DepJar depJar;
 	private Set<ClassVO> onlyClses;// exist in jar,but not in final
@@ -33,9 +33,9 @@ public class JarRiskAna {
 	private Set<String> risk1Mthds;// reached and thrown
 	private Set<String> risk2Mthds;// reached and thrown and called by method in other jar.
 
-	private List<NodeRiskAna> nodeRiskAnas;
+	private List<NodeCg> nodeRiskAnas;
 
-	public JarRiskAna(DepJar depJar, Map<String, ClassVO> clsTb) {
+	public DepJarCg(DepJar depJar) {
 		this.depJar = depJar;
 		onlyClses = new HashSet<ClassVO>();
 //		onlyMthds = new HashMap<String, List<MethodVO>>();
@@ -48,7 +48,7 @@ public class JarRiskAna {
 	private void sum() {
 		rchedMthds = new HashSet<String>();
 		rchedServices = new HashSet<String>();
-		for (NodeRiskAna nodeRiskAna : nodeRiskAnas) {
+		for (NodeCg nodeRiskAna : nodeRiskAnas) {
 			rchedMthds.addAll(nodeRiskAna.getRchedMthds());
 			rchedServices.addAll(nodeRiskAna.getRchedServices());
 		}
@@ -58,9 +58,9 @@ public class JarRiskAna {
 		onlyClses.add(cls);
 	}
 
-	public List<NodeRiskAna> getNodeRiskAnas() {
+	public List<NodeCg> getNodeRiskAnas() {
 		if (nodeRiskAnas == null) {
-			nodeRiskAnas = new ArrayList<NodeRiskAna>();
+			nodeRiskAnas = new ArrayList<NodeCg>();
 			for (NodeAdapter node : depJar.getNodeAdapters()) {
 				nodeRiskAnas.add(node.getNodeRiskAna(this));
 			}
@@ -73,7 +73,7 @@ public class JarRiskAna {
 		sb.append(depJar.toString() + "\n");
 		sb.append("reached size: " + rchedMthds.size() + " reached_thrown size:" + getRisk1Mthds().size()
 				+ " reached_thrown_service:" + getRisk2Mthds().size() + "\n");
-		for (NodeRiskAna nodeRiskAna : getNodeRiskAnas()) {
+		for (NodeCg nodeRiskAna : getNodeRiskAnas()) {
 			sb.append(nodeRiskAna.getRiskString());
 			sb.append("\n");
 		}

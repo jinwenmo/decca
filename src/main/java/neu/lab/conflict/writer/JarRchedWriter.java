@@ -10,7 +10,7 @@ import neu.lab.conflict.risk.FourRow;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.NodeConflict;
 
-public class ReachNumWriter {
+public class JarRchedWriter {
 	public void write(String outPath) {
 		try {
 //			final String[] header = { "projectId", "conflictId", "type", "origin", "load", "other" };

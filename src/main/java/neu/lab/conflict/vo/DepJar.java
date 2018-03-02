@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import neu.lab.conflict.container.NodeAdapters;
-import neu.lab.conflict.risk.JarRiskAna;
+import neu.lab.conflict.risk.DepJarCg;
 import neu.lab.conflict.soot.JarAna;
 import neu.lab.conflict.util.MavenUtil;
 
@@ -29,7 +29,7 @@ public class DepJar {
 	private List<String> jarFilePaths;// host project may have multiple source.
 	private Map<String, ClassVO> clsTb;// all class in jar
 	private Set<NodeAdapter> nodeAdapters;// all
-	private JarRiskAna jarRisk;
+	private DepJarCg jarRisk;
 
 	public DepJar(String groupId, String artifactId, String version, String classifier, List<String> jarFilePaths) {
 		this.groupId = groupId;
@@ -50,9 +50,9 @@ public class DepJar {
 		return !this.isSelected();
 	}
 
-	public JarRiskAna getJarRiskAna(Map<String, ClassVO> clsTb) {
+	public DepJarCg getJarRiskAna(Map<String, ClassVO> clsTb) {
 		if (jarRisk == null) {
-			jarRisk = new JarRiskAna(this, clsTb);
+			jarRisk = new DepJarCg(this);
 		}
 
 		return jarRisk;

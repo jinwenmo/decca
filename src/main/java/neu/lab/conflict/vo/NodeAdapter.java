@@ -12,8 +12,8 @@ import org.apache.maven.shared.dependency.tree.DependencyNode;
 
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
-import neu.lab.conflict.risk.JarRiskAna;
-import neu.lab.conflict.risk.NodeRiskAna;
+import neu.lab.conflict.risk.DepJarCg;
+import neu.lab.conflict.risk.NodeCg;
 import neu.lab.conflict.soot.SootCg;
 import neu.lab.conflict.util.ClassifierUtil;
 import neu.lab.conflict.util.MavenUtil;
@@ -117,8 +117,8 @@ public class NodeAdapter {
 		return node.getArtifact().getVersion();
 	}
 
-	public NodeRiskAna getNodeRiskAna(JarRiskAna jarRiskAna) {
-		return new NodeRiskAna(this,jarRiskAna);
+	public NodeCg getNodeRiskAna(DepJarCg jarRiskAna) {
+		return new NodeCg(this,jarRiskAna);
 	}
 
 	/**

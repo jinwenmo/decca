@@ -21,19 +21,19 @@ import neu.lab.conflict.vo.NodeAdapter;
  * @author asus
  *
  */
-public class NodeRiskAna {
+public class NodeCg {
 	private LinkedList<NodeAdapter> anaAncestors;// there is order(from down to up)
 	private Set<String> rchedMthds;// reached method in call-graph computed
 	private Set<String> rchedServices;//
 	
 	private Set<String> risk1Mthds;// reached and thrown
 	private Set<String> risk2Mthds;// reached and thrown and called by method in other jar.
-	private JarRiskAna jarRiskAna;
+	private DepJarCg jarRiskAna;
 	private Graph graph;
 
 	private Map<String, Book> books;// reached path of method in risk2Mthds
 
-	public NodeRiskAna(NodeAdapter nodeAdapter, JarRiskAna jarRiskAna) {
+	public NodeCg(NodeAdapter nodeAdapter, DepJarCg jarRiskAna) {
 		this.jarRiskAna = jarRiskAna;
 		LinkedList<NodeAdapter> ancestors = nodeAdapter.getAncestors(true);
 		if (ancestors.size() == 1) {// manageNode that don't have ancestor don‘t need analysis.
@@ -161,7 +161,7 @@ public class NodeRiskAna {
 		this.rchedServices = rchedServices;
 	}
 
-	public JarRiskAna getJarRiskAna() {
+	public DepJarCg getJarRiskAna() {
 		return jarRiskAna;
 	}
 

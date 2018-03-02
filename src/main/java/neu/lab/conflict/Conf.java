@@ -20,6 +20,8 @@ public class Conf {
 	
 	public static boolean ONLY_GET_SIMPLE = false;
 	
+	public static boolean DEL_LONGTIME = true;
+	
 	public static boolean DEL_OPTIONAL = false;
 	
 	public static boolean DEL_PROVIDED = false;
@@ -29,6 +31,8 @@ public class Conf {
 	public static boolean PRINT_JAR_DUP_RISK = true;
 	
 	public static boolean ANA_FROM_HOST = true;
+	
+	
 	
 //	public static final String outSir = "D:\\ws\\sta\\";
 }
