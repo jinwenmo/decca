@@ -22,6 +22,7 @@ public class JarRchedWriter {
 				printer.printRecord(fourRow.mthdNameRow);
 				printer.printRecord(fourRow.serviceRow);
 				printer.printRecord(fourRow.serviceNameRow);
+				printer.flush();
 			}
 			printer.close();
 		} catch (Exception e) {

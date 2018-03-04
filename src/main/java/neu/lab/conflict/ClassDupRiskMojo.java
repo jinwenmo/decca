@@ -6,12 +6,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import neu.lab.conflict.writer.ClassDupRiskWriter;
 
-@Mojo(name = "classDupRisk", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
+@Mojo(name = "classDupRisk", defaultPhase = LifecyclePhase.VALIDATE)
 public class ClassDupRiskMojo extends ConflictMojo{
 
 	@Override
 	public void run() {
-		new ClassDupRiskWriter().writeByJar();		
+		new ClassDupRiskWriter().writeByJar(Conf.outDir + "classDupByJar.txt");		
 	}
 
 }

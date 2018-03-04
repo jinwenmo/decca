@@ -16,18 +16,18 @@ import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.NodeAdapter;
+import neu.lab.conflict.writer.ClassDupRiskWriter;
 
 @Mojo(name = "debug", defaultPhase = LifecyclePhase.VALIDATE)
 public class DebugMojo extends ConflictMojo {
 
 	@Override
 	public void run() {
-		// Cmp.cmp();
-		write(Conf.outDir + "debug.csv");
-
+//		writeDepNum(Conf.outDir + "debug.csv");
+		new ClassDupRiskWriter().writeByJar(Conf.outDir + "classDupByJar.txt");
 	}
 
-	public void write(String outPath) {
+	public void writeDepNum(String outPath) {
 		try {
 			CSVPrinter printer = new CSVPrinter(new FileWriter(outPath, true), CSVFormat.DEFAULT);
 			List<String> record = new ArrayList<String>();
