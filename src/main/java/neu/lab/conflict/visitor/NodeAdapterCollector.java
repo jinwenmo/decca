@@ -16,6 +16,7 @@ public class NodeAdapterCollector implements DependencyNodeVisitor {
 	static {
 		longTimeLib = new HashSet<String>();
 		longTimeLib.add("org.scala-lang:scala-library");
+		longTimeLib.add("org.clojure:clojure");
 	}
 	private NodeAdapters nodeAdapters;
 
