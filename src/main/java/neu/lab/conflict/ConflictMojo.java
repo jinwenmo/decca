@@ -67,7 +67,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 
 	public void execute() throws MojoExecutionException {
 		this.getLog().info("method detect start:");
-		if ("jar".equals(project.getPackaging())) {
+		if ("jar".equals(project.getPackaging())||"war".equals(project.getPackaging())) {
 			try {
 //				project.
 				root = dependencyTreeBuilder.buildDependencyTree(project, localRepository, null);
@@ -77,7 +77,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 			initGlobalVar();
 			run();
 		} else {
-			this.getLog().info("this project fail because package type is not jar:" + project.getGroupId() + ":"
+			this.getLog().info("this project fail because package type is neither jar nor war:" + project.getGroupId() + ":"
 					+ project.getArtifactId() + ":" + project.getVersion() + "@" + project.getFile().getAbsolutePath());
 		}
 

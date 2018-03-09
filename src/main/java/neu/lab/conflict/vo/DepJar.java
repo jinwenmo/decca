@@ -51,11 +51,12 @@ public class DepJar {
 	}
 
 	public DepJarCg getJarRiskAna(Map<String, ClassVO> clsTb) {
-		if (jarRisk == null) {
-			jarRisk = new DepJarCg(this);
-		}
-
-		return jarRisk;
+//		if (jarRisk == null) {
+//			jarRisk = new DepJarCg(this);
+//		}
+//
+//		return jarRisk;
+		return new DepJarCg(this);
 	}
 
 	public Set<NodeAdapter> getNodeAdapters() {
