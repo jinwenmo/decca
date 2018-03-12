@@ -1,11 +1,15 @@
 package neu.lab.conflict.vo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.risk.DepJarCg;
@@ -50,6 +54,15 @@ public class DepJar {
 		return !this.isSelected();
 	}
 
+	
+	public Element getDepJarElement() {
+		Element nodeEle = new DefaultElement("version");
+		for(NodeAdapter node:this.getNodeAdapters()) {
+			nodeEle.add(node.getPathElement());
+		}
+		return nodeEle;
+	}
+	
 	public DepJarCg getJarRiskAna(Map<String, ClassVO> clsTb) {
 //		if (jarRisk == null) {
 //			jarRisk = new DepJarCg(this);
@@ -256,5 +269,16 @@ public class DepJar {
 	public boolean hasClsTb() {
 		return null != this.clsTb;
 	}
+	
+	public List<String> getInnerMthds(Collection<String> testMthds) {
+		Set<String> jarMthds = getAllMthd();
+		List<String> innerMthds = new ArrayList<String>();
+		for(String mthd:testMthds) {
+			if(jarMthds.contains(mthd))
+				innerMthds.add(mthd);
+		}
+		return innerMthds;
+	}
+
 
 }

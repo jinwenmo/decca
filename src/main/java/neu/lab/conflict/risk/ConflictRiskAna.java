@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
+
 import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.FinalClasses;
+import neu.lab.conflict.util.MathUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.ClassVO;
@@ -15,6 +19,8 @@ import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.NodeConflict;
 
 public class ConflictRiskAna {
+	private final double T_LOW = 0.98;
+	private final double T_HIGH = 1;
 	private List<DepJarCg> jarRiskAnas;
 	private NodeConflict nodeConflict;
 
@@ -39,6 +45,22 @@ public class ConflictRiskAna {
 		this.jarRiskAnas = jarRiskAnas;
 	}
 
+	public Element getConflictElement() {
+		Element conflictEle = new DefaultElement("conflict");
+		conflictEle.addAttribute("groupId:artifactId", nodeConflict.getGroupId() + ":" + nodeConflict.getArtifactId());
+		StringBuilder versions = new StringBuilder();
+		for (String version : nodeConflict.getVersions()) {
+			versions.append(version);
+		}
+		conflictEle.addAttribute("versions", versions.toString());
+		conflictEle.addAttribute("riskLevel", "" + getRiskLevel());
+		Element versionsEle = conflictEle.addElement("versions");
+		for(DepJar depJar:nodeConflict.getDepJars()) {
+			versionsEle.add(depJar.getDepJarElement());;
+		}
+		return conflictEle;
+	}
+
 	public String getRiskString() {
 		StringBuilder sb = new StringBuilder("risk for conflict:");
 		sb.append(nodeConflict.toString() + "\n");
@@ -49,6 +71,39 @@ public class ConflictRiskAna {
 			sb.append("\n");
 		}
 		return sb.toString();
+	}
+
+	public int getRiskLevel() {
+		boolean loadSafe = false;
+		boolean othersSafe = true;
+		double ratio = MathUtil.getQuotient(nodeConflict.getUsedDepJar().getInnerMthds(getRchedMthds()).size(),
+				getRchedMthds().size());
+		if (T_LOW <= ratio && ratio < T_HIGH) {
+			loadSafe = true;
+		}
+		for (DepJar depJar : nodeConflict.getDepJars()) {
+			if (nodeConflict.getUsedDepJar() != depJar) {
+				ratio = MathUtil.getQuotient(depJar.getInnerMthds(getRchedMthds()).size(), getRchedMthds().size());
+				if (T_LOW <= ratio && ratio < T_HIGH) {
+					othersSafe = true;
+				} else {
+					othersSafe = false;
+					break;
+				}
+			}
+		}
+		if (loadSafe) {
+			if (othersSafe)
+				return 1;
+			else
+				return 2;
+		} else {
+			if (othersSafe)
+				return 3;
+			else
+				return 4;
+
+		}
 	}
 
 	public FourRow getFourRow() {

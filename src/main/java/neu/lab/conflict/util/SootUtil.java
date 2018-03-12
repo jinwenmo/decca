@@ -28,7 +28,7 @@ public class SootUtil {
 			outDir.mkdirs();
 		}
 		try {
-			soot.G.v().out = new PrintStream(new File(outDir.getAbsolutePath() + "/" + "soot.log"));
+			soot.G.v().out = new PrintStream(new File(outDir.getAbsolutePath() + File.separator + "soot.log"));
 		} catch (FileNotFoundException e) {
 			soot.G.v().out = System.out;
 		}

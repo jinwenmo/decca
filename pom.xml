@@ -59,6 +59,11 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.5</version>
 		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -94,7 +99,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin> 
+			</plugin>
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-invoker-plugin</artifactId> 
 				<version>1.7</version> <configuration> <debug>true</debug> <projectsDirectory>d://testcase</projectsDirectory> 
 				<goals> <goal>package</goal> </goals> </configuration> <executions> <execution> 

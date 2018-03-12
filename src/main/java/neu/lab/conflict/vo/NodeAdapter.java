@@ -9,6 +9,8 @@ import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
 import org.apache.maven.artifact.resolver.ArtifactResolutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
+import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
@@ -33,6 +35,12 @@ public class NodeAdapter {
 		this.node = node;
 		if (node != null)
 			resolve();
+	}
+
+	public Element getPathElement() {
+		Element pathEle = new DefaultElement("path");
+		pathEle.addText(getWholePath());
+		return pathEle;
 	}
 
 	private void resolve() {
@@ -118,7 +126,7 @@ public class NodeAdapter {
 	}
 
 	public NodeCg getNodeRiskAna(DepJarCg jarRiskAna) {
-		return new NodeCg(this,jarRiskAna);
+		return new NodeCg(this, jarRiskAna);
 	}
 
 	/**
@@ -205,14 +213,17 @@ public class NodeAdapter {
 
 	@Override
 	public String toString() {
-		return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getClassifier() + ":" + getScope();
+		String scope = getScope();
+		if (null == scope)
+			scope = "";
+		return getGroupId() + ":" + getArtifactId() + ":" + getVersion() + ":" + getClassifier() + ":" + scope;
 	}
 
 	public String getWholePath() {
 		StringBuilder sb = new StringBuilder(toString());
 		NodeAdapter father = getParent();
 		while (null != father) {
-			sb.insert(0, father.toString() + "->");
+			sb.insert(0, father.toString() + " + ");
 			father = father.getParent();
 		}
 		return sb.toString();

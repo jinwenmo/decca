@@ -8,13 +8,13 @@ import java.io.PrintWriter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.statics.ClassDup;
 import neu.lab.conflict.statics.ClassDups;
 import neu.lab.conflict.statics.DupClsJarPair;
 import neu.lab.conflict.statics.DupClsJarPairs;
 import neu.lab.conflict.util.MavenUtil;
+import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.risk.DepJarCgs;
 import neu.lab.conflict.risk.FourRow;
 
@@ -31,7 +31,7 @@ public class ClassDupRiskWriter {
 	public void writeByClass() {
 		try {
 			PrintWriter printer = new PrintWriter(
-					new BufferedWriter(new FileWriter(new File(Conf.outDir + "classDupRisk.txt"), true)));
+					new BufferedWriter(new FileWriter(new File(UserConf.getOutDir() + "classDupRisk.txt"), true)));
 			printer.println("===============projectPath->" + MavenUtil.i().getProjectInfo());
 
 			printer.println("=====class duplicate:");

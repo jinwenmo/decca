@@ -54,7 +54,10 @@ public abstract class ConflictMojo extends AbstractMojo {
 	DependencyNode root;
 
 	@Parameter(defaultValue = "${project.compileSourceRoots}", readonly = true, required = true)
-	public List<String> compileSourceRoots;
+	public List<String> compileSourceRoots;	
+	
+	@Parameter( property = "append", defaultValue = "false" )
+	protected boolean append;
 
 	protected void initGlobalVar() {
 		MavenUtil.i().setMojo(this);

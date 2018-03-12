@@ -1,6 +1,8 @@
 package neu.lab.conflict.vo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import neu.lab.conflict.risk.ConflictRiskAna;
@@ -88,4 +90,18 @@ public class NodeConflict {
 		return artifactId;
 	}
 	
+	/**
+	 * @return first version is the used version
+	 */
+	public List<String> getVersions(){
+		List<String> versions = new ArrayList<String>();
+		versions.add(getUsedDepJar().getVersion());
+		for(DepJar depJar:depJars) {
+			String version = depJar.getVersion();
+			if(!versions.contains(version)) {
+				versions.add("/"+version);
+			}
+		}
+		return versions;
+	}
 }

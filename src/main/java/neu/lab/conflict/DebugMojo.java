@@ -15,6 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.util.MavenUtil;
+import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.vo.NodeAdapter;
 import neu.lab.conflict.writer.ClassDupRiskWriter;
 
@@ -24,7 +25,7 @@ public class DebugMojo extends ConflictMojo {
 	@Override
 	public void run() {
 //		writeDepNum(Conf.outDir + "debug.csv");
-		new ClassDupRiskWriter().writeByJar(Conf.outDir + "classDupByJar.txt");
+		new ClassDupRiskWriter().writeByJar(UserConf.getOutDir() + "classDupByJar.txt");
 	}
 
 	public void writeDepNum(String outPath) {
