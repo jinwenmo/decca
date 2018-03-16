@@ -34,6 +34,7 @@ public class DepJar {
 	private Map<String, ClassVO> clsTb;// all class in jar
 	private Set<NodeAdapter> nodeAdapters;// all
 	private DepJarCg jarRisk;
+	private Set<String> allMthd;
 
 	public DepJar(String groupId, String artifactId, String version, String classifier, List<String> jarFilePaths) {
 		this.groupId = groupId;
@@ -54,21 +55,22 @@ public class DepJar {
 		return !this.isSelected();
 	}
 
-	
 	public Element getDepJarElement() {
 		Element nodeEle = new DefaultElement("version");
-		for(NodeAdapter node:this.getNodeAdapters()) {
+		nodeEle.addAttribute("versionId", getVersion());
+		nodeEle.addAttribute("loaded", ""+isSelected());
+		for (NodeAdapter node : this.getNodeAdapters()) {
 			nodeEle.add(node.getPathElement());
 		}
 		return nodeEle;
 	}
-	
+
 	public DepJarCg getJarRiskAna(Map<String, ClassVO> clsTb) {
-//		if (jarRisk == null) {
-//			jarRisk = new DepJarCg(this);
-//		}
-//
-//		return jarRisk;
+		// if (jarRisk == null) {
+		// jarRisk = new DepJarCg(this);
+		// }
+		//
+		// return jarRisk;
 		return new DepJarCg(this);
 	}
 
@@ -129,7 +131,7 @@ public class DepJar {
 	}
 
 	public Map<String, ClassVO> getClsTb() {
-		if (clsTb == null) {// havent initial
+		if (clsTb == null) {
 			if (null == this.getJarFilePaths())// no file
 				clsTb = new HashMap<String, ClassVO>();
 			else {
@@ -159,13 +161,19 @@ public class DepJar {
 	// }
 
 	public Set<String> getAllMthd() {
-		Set<String> allMthd = new HashSet<String>();
-		for (ClassVO cls : getClsTb().values()) {
-			for (MethodVO mthd : cls.getMthds()) {
-				allMthd.add(mthd.getMthdSig());
+		if (allMthd == null) {
+			allMthd = new HashSet<String>();
+			for (ClassVO cls : getClsTb().values()) {
+				for (MethodVO mthd : cls.getMthds()) {
+					allMthd.add(mthd.getMthdSig());
+				}
 			}
 		}
 		return allMthd;
+	}
+
+	public boolean containsMthd(String mthd) {
+		return getAllMthd().contains(mthd);
 	}
 
 	public List<String> getOnlyClses(DepJar otherJar) {
@@ -249,7 +257,8 @@ public class DepJar {
 	}
 
 	public List<String> getClassPath() {
-		//if node is inner project,will return source directory(using source directory can get classes before maven-package)
+		// if node is inner project,will return source directory(using source directory
+		// can get classes before maven-package)
 		if (getNodeAdapters().size() == 1) {
 			NodeAdapter node = getNodeAdapters().iterator().next();
 			if (MavenUtil.i().isInner(node))
@@ -269,16 +278,15 @@ public class DepJar {
 	public boolean hasClsTb() {
 		return null != this.clsTb;
 	}
-	
+
 	public List<String> getInnerMthds(Collection<String> testMthds) {
 		Set<String> jarMthds = getAllMthd();
 		List<String> innerMthds = new ArrayList<String>();
-		for(String mthd:testMthds) {
-			if(jarMthds.contains(mthd))
+		for (String mthd : testMthds) {
+			if (jarMthds.contains(mthd))
 				innerMthds.add(mthd);
 		}
 		return innerMthds;
 	}
-
 
 }

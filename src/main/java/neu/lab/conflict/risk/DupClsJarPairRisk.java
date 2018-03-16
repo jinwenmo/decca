@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
+
 import neu.lab.conflict.statics.DupClsJarPair;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
@@ -27,6 +30,11 @@ public class DupClsJarPairRisk {
 		this.addRched(cg2);
 	}
 
+//	public Element getConflictElement() {
+//	Element conflictEle = new DefaultElement("conflict");
+//	
+//}
+	
 	private void addRched(DepJarCg cg) {
 		for (String rchedMthd : cg.getRchedMthds()) {
 			if (jarPair.isInDupCls(rchedMthd))
@@ -90,6 +98,7 @@ public class DupClsJarPairRisk {
 		serviceNameRow.add("" + jar2FourNum.serviceNameCnt);
 		return new FourRow(mthdRow, mthdNameRow, serviceRow, serviceNameRow);
 	}
+
 	private FourNum getJarFourNum(DepJar jar) {
 		Set<String> jarMthdSigs = jar.getAllMthd();
 		Set<String> jarMthdNames = new HashSet<String>();

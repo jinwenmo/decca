@@ -89,7 +89,6 @@ public class NodeConflict {
 	public String getArtifactId() {
 		return artifactId;
 	}
-	
 	/**
 	 * @return first version is the used version
 	 */

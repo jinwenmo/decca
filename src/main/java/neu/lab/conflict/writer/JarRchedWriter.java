@@ -21,7 +21,6 @@ public class JarRchedWriter {
 //			final String[] header = { "projectId", "conflictId", "type", "origin", "load", "other" };
 //			CSVFormat format = CSVFormat.DEFAULT.withHeader(header);
 			
-			
 			CSVPrinter printer = new CSVPrinter(new FileWriter(outPath, append), CSVFormat.DEFAULT);
 			for (NodeConflict conflict : NodeConflicts.i().getConflicts()) {
 				FourRow fourRow = conflict.getRiskAna().getFourRow();
@@ -55,5 +54,10 @@ public class JarRchedWriter {
 		} catch (Exception e) {
 			MavenUtil.i().getLog().error("can't write risk result:", e);
 		}
+	}
+
+	public void writeAll(String string, boolean append) {
+		// TODO Auto-generated method stub
+		
 	}
 }

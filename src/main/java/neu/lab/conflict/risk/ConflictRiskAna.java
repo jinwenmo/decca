@@ -33,6 +33,19 @@ public class ConflictRiskAna {
 	private Set<String> risk1Mthds;// reached and thrown
 	private Set<String> risk2Mthds;// reached and thrown and called by method in other jar.
 
+
+	private double getT_HIGH() {
+		return T_HIGH;
+	}
+	
+	private double getT_LOW() {
+		if (useOldAl()) {
+			return 0;
+		} else {
+			return T_LOW;
+		}
+	}
+	
 	private ConflictRiskAna(NodeConflict nodeConflict) {
 		this.nodeConflict = nodeConflict;
 	}
@@ -53,10 +66,24 @@ public class ConflictRiskAna {
 			versions.append(version);
 		}
 		conflictEle.addAttribute("versions", versions.toString());
-		conflictEle.addAttribute("riskLevel", "" + getRiskLevel());
+		int riskLevel = getRiskLevel();
+		conflictEle.addAttribute("riskLevel", "" + riskLevel);
 		Element versionsEle = conflictEle.addElement("versions");
-		for(DepJar depJar:nodeConflict.getDepJars()) {
-			versionsEle.add(depJar.getDepJarElement());;
+		for (DepJar depJar : nodeConflict.getDepJars()) {
+			versionsEle.add(depJar.getDepJarElement());
+		}
+
+		Element risksEle = conflictEle.addElement("RiskMethods");
+		risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
+		if (riskLevel == 3 || riskLevel == 4) {
+			for (String rchedMthd : getRchedMthds()) {
+				if (!nodeConflict.getUsedDepJar().containsMthd(rchedMthd)) {
+					Element riskEle = risksEle.addElement("RiskMthd");
+					riskEle.addText(rchedMthd.replace('<', ' ').replace('>', ' '));
+				}
+			}
+		} else {
+
 		}
 		return conflictEle;
 	}
@@ -74,19 +101,17 @@ public class ConflictRiskAna {
 	}
 
 	public int getRiskLevel() {
-		boolean loadSafe = false;
+		boolean loadSafe = true;
 		boolean othersSafe = true;
 		double ratio = MathUtil.getQuotient(nodeConflict.getUsedDepJar().getInnerMthds(getRchedMthds()).size(),
 				getRchedMthds().size());
-		if (T_LOW <= ratio && ratio < T_HIGH) {
-			loadSafe = true;
+		if (getT_LOW() <= ratio && ratio < getT_HIGH()) {
+			loadSafe = false;
 		}
 		for (DepJar depJar : nodeConflict.getDepJars()) {
 			if (nodeConflict.getUsedDepJar() != depJar) {
 				ratio = MathUtil.getQuotient(depJar.getInnerMthds(getRchedMthds()).size(), getRchedMthds().size());
-				if (T_LOW <= ratio && ratio < T_HIGH) {
-					othersSafe = true;
-				} else {
+				if (getT_LOW() <= ratio && ratio < getT_HIGH()) {
 					othersSafe = false;
 					break;
 				}
@@ -250,5 +275,12 @@ public class ConflictRiskAna {
 		}
 		return rchedServiceNames;
 	}
+
+	private boolean useOldAl() {
+		return MavenUtil.i().getProjectGroupId().equals("org.apache.metamodel")
+				&& MavenUtil.i().getProjectArtifactId().equals("MetaModel-elasticsearch-rest");
+	}
+
+
 
 }

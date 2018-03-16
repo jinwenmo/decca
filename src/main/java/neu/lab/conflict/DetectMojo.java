@@ -46,7 +46,9 @@ public class DetectMojo extends ConflictMojo {
 					resultFilePath = MavenUtil.i().getBuildDir().getAbsolutePath() + File.separator + "reachnum.csv";
 				}
 				new JarRchedWriter().writeCsv(resultFilePath, append);
-			} else {
+			} else if("all".equals(resultFileType)) {
+				new JarRchedWriter().writeAll("d:\\ws\\sta\\", append);
+			}else {
 				getLog().error("resultFileType can be xml/csv , can't be " + resultFileType);
 			}
 			getLog().info("jarDeconstrction time:" + JarAna.runtime);

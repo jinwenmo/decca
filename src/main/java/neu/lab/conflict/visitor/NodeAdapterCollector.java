@@ -26,7 +26,7 @@ public class NodeAdapterCollector implements DependencyNodeVisitor {
 
 	public boolean visit(DependencyNode node) {
 
-		MavenUtil.i().getLog().info(node.toNodeString() + " type:" + node.getArtifact().getType() + " version"
+		MavenUtil.i().getLog().debug(node.toNodeString() + " type:" + node.getArtifact().getType() + " version"
 				+ node.getArtifact().getVersionRange() + " selected:" + (node.getState() == DependencyNode.INCLUDED));
 		
 		if(Conf.DEL_LONGTIME) {
