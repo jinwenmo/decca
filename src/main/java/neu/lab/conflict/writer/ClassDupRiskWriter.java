@@ -28,6 +28,7 @@ public class ClassDupRiskWriter {
 		classDups = new ClassDups(DepJars.i());
 	}
 
+
 	public void writeByClass() {
 		try {
 			PrintWriter printer = new PrintWriter(
@@ -46,10 +47,8 @@ public class ClassDupRiskWriter {
 	}
 
 	public void writeByJar(String outPath) {
-
 		try {
-			PrintWriter printer = new PrintWriter(
-					new BufferedWriter(new FileWriter(new File(outPath), true)));
+			PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(new File(outPath), true)));
 			printer.println("===============projectPath->" + MavenUtil.i().getProjectInfo());
 
 			for (DupClsJarPair jarPair : getJarPairs().getAllJarPair()) {
@@ -62,10 +61,9 @@ public class ClassDupRiskWriter {
 		}
 	}
 
-	public void writeRchNum(String outPath) {
+	public void writeRchNum(String outPath, boolean append) {
 		try {
-			CSVPrinter printer = new CSVPrinter(new FileWriter(outPath, true), CSVFormat.DEFAULT);
-
+			CSVPrinter printer = new CSVPrinter(new FileWriter(outPath, append), CSVFormat.DEFAULT);
 			DepJarCgs jarCgs = new DepJarCgs();
 			for (DupClsJarPair jarPair : getJarPairs().getAllJarPair()) {
 				FourRow fourRow = jarPair.getPairRisk(jarCgs).getFourRow();
@@ -78,7 +76,6 @@ public class ClassDupRiskWriter {
 		} catch (Exception e) {
 			MavenUtil.i().getLog().error("can't write reach class number:", e);
 		}
-
 	}
 
 	private DupClsJarPairs getJarPairs() {

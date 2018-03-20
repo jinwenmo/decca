@@ -18,7 +18,7 @@ public class Graph {
 	public Graph(Set<Node> nodes, List<MethodCall> calls) {
 
 		// filter
-		MavenUtil.i().getLog().info("graph-before-filter nodes size:" + nodes.size() + " calls size:" + calls.size());
+		MavenUtil.i().getLog().debug("graph-before-filter nodes size:" + nodes.size() + " calls size:" + calls.size());
 		if (Conf.FLT_CALL)
 			filtCalls(calls);
 		name2node = new HashMap<String, Node>();
@@ -34,7 +34,7 @@ public class Graph {
 //		if (Conf.FLT_NODE)
 //			filterNode(risk2mthds);
 		MavenUtil.i().getLog()
-				.info("graph-after-filter nodes size:" + name2node.size() + " calls size:" + calls.size());
+				.debug("graph-after-filter nodes size:" + name2node.size() + " calls size:" + calls.size());
 	}
 
 	private void filterDangerImpl() {

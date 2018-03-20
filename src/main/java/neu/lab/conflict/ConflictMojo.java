@@ -84,8 +84,8 @@ public abstract class ConflictMojo extends AbstractMojo {
 					+ project.getArtifactId() + ":" + project.getVersion() + "@" + project.getFile().getAbsolutePath());
 		}
 
-		this.getLog().info("method detect end");
-
+		this.getLog().debug("method detect end");
+		
 	}
 
 	public abstract void run();

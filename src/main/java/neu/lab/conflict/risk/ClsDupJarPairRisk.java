@@ -9,11 +9,15 @@ import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 import neu.lab.conflict.statics.DupClsJarPair;
+import neu.lab.conflict.util.MathUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.DepJar;
 
-public class DupClsJarPairRisk {
+public class ClsDupJarPairRisk {
+	private final double T_LOW = 0;
+	private final double T_HIGH = 1;
+
 	private DupClsJarPair jarPair;
 
 	private Set<String> rchedMthds;
@@ -22,19 +26,51 @@ public class DupClsJarPairRisk {
 	private Set<String> rchedServices;
 	private Set<String> rchedServiceNames;
 
-	public DupClsJarPairRisk(DupClsJarPair jarPair, DepJarCg cg1, DepJarCg cg2) {
+	public ClsDupJarPairRisk(DupClsJarPair jarPair, DepJarCg cg1, DepJarCg cg2) {
 		this.jarPair = jarPair;
 		this.rchedMthds = new HashSet<String>();
-		this.rchedMthds = new HashSet<String>();
+		this.rchedServices = new HashSet<String>();
 		this.addRched(cg1);
 		this.addRched(cg2);
 	}
 
-//	public Element getConflictElement() {
-//	Element conflictEle = new DefaultElement("conflict");
-//	
-//}
-	
+	public Element getConflictElement() {
+		Element conflictEle = new DefaultElement("conflict");
+		conflictEle.addAttribute("jar-1", jarPair.getJar1().toString());
+		conflictEle.addAttribute("jar-2", jarPair.getJar2().toString());
+		conflictEle.addAttribute("riskLevel", "" + getRiskLevel());
+		conflictEle.add(jarPair.getJar1().getClsConflictEle(1));
+		conflictEle.add(jarPair.getJar2().getClsConflictEle(2));
+		Element risksEle = conflictEle.addElement("RiskMethods");
+		risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
+		for (String rchedMthd : getRchedMthds()) {
+			if (!jarPair.getJar1().containsMthd(rchedMthd) || !jarPair.getJar2().containsMthd(rchedMthd)) {
+				Element riskEle = risksEle.addElement("RiskMthd");
+				riskEle.addText(rchedMthd.replace('<', ' ').replace('>', ' '));
+			}
+		}
+
+		return conflictEle;
+	}
+
+	private int getRiskLevel() {
+
+		double ratio1 = MathUtil.getQuotient(jarPair.getJar1().getInnerMthds(getRchedMthds()).size(),
+				getRchedMthds().size());
+		double ratio2 = MathUtil.getQuotient(jarPair.getJar2().getInnerMthds(getRchedMthds()).size(),
+				getRchedMthds().size());
+		boolean jar1Risk = T_LOW <= ratio1 && ratio1 < T_HIGH;
+		boolean jar2Risk = T_LOW <= ratio2 && ratio2 < T_HIGH;
+		if (jar1Risk || jar2Risk) {
+			if (jar1Risk && jar2Risk) {
+				return 4;
+			}
+			return 3;
+		} else {
+			return 1;
+		}
+	}
+
 	private void addRched(DepJarCg cg) {
 		for (String rchedMthd : cg.getRchedMthds()) {
 			if (jarPair.isInDupCls(rchedMthd))
@@ -79,18 +115,18 @@ public class DupClsJarPairRisk {
 		List<String> mthdNameRow = getRecord("mthdName");
 		List<String> serviceRow = getRecord("service");
 		List<String> serviceNameRow = getRecord("serviceName");
-		//add origin column
+		// add origin column
 		mthdRow.add("" + this.getRchedMthds().size());
 		mthdNameRow.add("" + this.getRchedMthdNames().size());
 		serviceRow.add("" + this.getRchedServices().size());
 		serviceNameRow.add("" + this.getRchedServiceNames().size());
-		//add jar1 column
+		// add jar1 column
 		FourNum jar1FourNum = getJarFourNum(jarPair.getJar1());
 		mthdRow.add("" + jar1FourNum.mthdCnt);
 		mthdNameRow.add("" + jar1FourNum.mthdNameCnt);
 		serviceRow.add("" + jar1FourNum.serviceCnt);
 		serviceNameRow.add("" + jar1FourNum.serviceNameCnt);
-		//add jar2 column
+		// add jar2 column
 		FourNum jar2FourNum = getJarFourNum(jarPair.getJar2());
 		mthdRow.add("" + jar2FourNum.mthdCnt);
 		mthdNameRow.add("" + jar2FourNum.mthdNameCnt);
@@ -125,7 +161,12 @@ public class DupClsJarPairRisk {
 		}
 		return fourNum;
 	}
-	public List<String> getRecord(String type){
+
+	/**
+	 * @param type
+	 * @return
+	 */
+	public List<String> getRecord(String type) {
 		List<String> record = new ArrayList<String>();
 		record.add(MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId() + ":"
 				+ MavenUtil.i().getProjectVersion());

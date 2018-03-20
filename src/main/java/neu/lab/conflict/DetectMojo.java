@@ -25,6 +25,12 @@ public class DetectMojo extends ConflictMojo {
 
 	@Parameter(property = "resultFilePath")
 	protected String resultFilePath;
+	
+	@Parameter(property = "detectClass",defaultValue = "false")
+	protected boolean detectClass;
+	
+	@Parameter(property = "detectJar",defaultValue = "true")
+	protected boolean detectJar;
 
 	@Override
 	public void run() {
@@ -33,14 +39,14 @@ public class DetectMojo extends ConflictMojo {
 		if (Conf.ANA_FROM_HOST && !MavenUtil.i().getBuildDir().exists()) {
 			getLog().warn(MavenUtil.i().getProjectInfo() + " dont't have target! skip");
 		} else {
-			if (Conf.CLASS_DUP)
-				FinalClasses.init(DepJars.i());
+//			if (Conf.CLASS_DUP)
+//				FinalClasses.init(DepJars.i());
 			if ("xml".equals(resultFileType)) {
-				if (null == resultFilePath) {
-					resultFilePath = MavenUtil.i().getBuildDir().getAbsolutePath() + File.separator
-							+ "levelPredict.xml";
-				}
-				new JarRchedWriter().writeDom(resultFilePath, append);
+//				if (null == resultFilePath) {
+//					resultFilePath = MavenUtil.i().getBuildDir().getAbsolutePath() + File.separator
+//							+ "levelPredict.xml";
+//				}
+				new JarRchedWriter().writeXml(resultFilePath, append,detectClass);
 			} else if ("csv".equals(resultFileType)) {
 				if (null == resultFilePath) {
 					resultFilePath = MavenUtil.i().getBuildDir().getAbsolutePath() + File.separator + "reachnum.csv";
@@ -51,8 +57,9 @@ public class DetectMojo extends ConflictMojo {
 			}else {
 				getLog().error("resultFileType can be xml/csv , can't be " + resultFileType);
 			}
-			getLog().info("jarDeconstrction time:" + JarAna.runtime);
-			getLog().info("call graph time:" + SootCg.runtime);
+			getLog().info("time to deconstruct jar :" + JarAna.runtime);
+			getLog().info("time to compute call-graph :" + SootCg.runtime);
+			
 		}
 
 	}

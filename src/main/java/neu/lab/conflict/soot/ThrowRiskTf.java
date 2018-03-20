@@ -43,10 +43,10 @@ public abstract class ThrowRiskTf extends SceneTransformer {
 		this.thrownMthds = thrownMthds;
 
 		entryClses = getJarCls(sootAnaUnit.getTopNode().getFilePath());
-		MavenUtil.i().getLog().info("entryClses size:" + entryClses.size());
+		MavenUtil.i().getLog().info("entry-class size:" + entryClses.size());
 
 		riskJarClses = getJarCls(sootAnaUnit.getBottomNode().getFilePath());
-		MavenUtil.i().getLog().info("riskJarClses size:" + riskJarClses.size());
+		MavenUtil.i().getLog().info("riskJar-class size:" + riskJarClses.size());
 	}
 
 	@Override

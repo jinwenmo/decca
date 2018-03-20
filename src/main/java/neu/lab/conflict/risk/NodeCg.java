@@ -25,7 +25,7 @@ public class NodeCg {
 	private LinkedList<NodeAdapter> anaAncestors;// there is order(from down to up)
 	private Set<String> rchedMthds;// reached method in call-graph computed
 	private Set<String> rchedServices;//
-	
+
 	private Set<String> risk1Mthds;// reached and thrown
 	private Set<String> risk2Mthds;// reached and thrown and called by method in other jar.
 	private DepJarCg jarRiskAna;
@@ -76,8 +76,8 @@ public class NodeCg {
 		List<String> confuseMthds = new ArrayList<String>();
 		StringBuilder sb = new StringBuilder("risk for node:");
 		sb.append(toString() + "\n");
-		sb.append("reached size: " + rchedMthds.size() + " reached_thrown size:" +  getRisk1Mthds().size()
-				+ " reached_thrown_service:" +  getRisk2Mthds().size() + "\n");
+		sb.append("reached size: " + rchedMthds.size() + " reached_thrown size:" + getRisk1Mthds().size()
+				+ " reached_thrown_service:" + getRisk2Mthds().size() + "\n");
 		for (String risk2Mthd : risk2Mthds) {
 			Book book = getBooks().get(risk2Mthd);
 			if (book == null) {
@@ -112,7 +112,7 @@ public class NodeCg {
 	public String toString() {
 		String str = "";
 		for (NodeAdapter nodeAdapter : anaAncestors) {
-			str = str + nodeAdapter.toString() + "->";
+			str = nodeAdapter.toString() + "->" + str;
 		}
 		return str;
 	}

@@ -117,7 +117,7 @@ class CgTf extends SceneTransformer {
 		conflictJarClses = new HashSet<String>();
 		conflictJarClses.addAll(SootUtil.getJarClasses(nodeRiskAna.getBottomNode().getFilePath()));
 		MavenUtil.i().getLog()
-				.info("entryClses size:" + entryClses.size() + " dupClses size:" + conflictJarClses.size());
+				.info("entry-Class size:" + entryClses.size() + " duplicate-class size:" + conflictJarClses.size());
 	}
 
 	@Override
@@ -150,7 +150,7 @@ class CgTf extends SceneTransformer {
 			}
 
 		}
-		MavenUtil.i().getLog().info("soot reachMethod size:" + Scene.v().getReachableMethods().size()
+		MavenUtil.i().getLog().debug("soot reachMethod size:" + Scene.v().getReachableMethods().size()
 				+ ";reachedMethod in jar size:" + rchMthds.size());
 
 		CallGraph cg = Scene.v().getCallGraph();

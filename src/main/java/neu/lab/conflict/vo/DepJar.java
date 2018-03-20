@@ -55,10 +55,19 @@ public class DepJar {
 		return !this.isSelected();
 	}
 
-	public Element getDepJarElement() {
+	public Element geJarConflictEle() {
 		Element nodeEle = new DefaultElement("version");
 		nodeEle.addAttribute("versionId", getVersion());
-		nodeEle.addAttribute("loaded", ""+isSelected());
+		nodeEle.addAttribute("loaded", "" + isSelected());
+		for (NodeAdapter node : this.getNodeAdapters()) {
+			nodeEle.add(node.getPathElement());
+		}
+		return nodeEle;
+	}
+
+	public Element getClsConflictEle(int num) {
+		Element nodeEle = new DefaultElement("jar-" + num);
+		nodeEle.addAttribute("id", toString());
 		for (NodeAdapter node : this.getNodeAdapters()) {
 			nodeEle.add(node.getPathElement());
 		}

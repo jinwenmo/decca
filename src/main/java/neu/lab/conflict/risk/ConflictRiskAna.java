@@ -60,7 +60,7 @@ public class ConflictRiskAna {
 
 	public Element getConflictElement() {
 		Element conflictEle = new DefaultElement("conflict");
-		conflictEle.addAttribute("groupId:artifactId", nodeConflict.getGroupId() + ":" + nodeConflict.getArtifactId());
+		conflictEle.addAttribute("groupId-artifactId", nodeConflict.getGroupId() + ":" + nodeConflict.getArtifactId());
 		StringBuilder versions = new StringBuilder();
 		for (String version : nodeConflict.getVersions()) {
 			versions.append(version);
@@ -70,7 +70,7 @@ public class ConflictRiskAna {
 		conflictEle.addAttribute("riskLevel", "" + riskLevel);
 		Element versionsEle = conflictEle.addElement("versions");
 		for (DepJar depJar : nodeConflict.getDepJars()) {
-			versionsEle.add(depJar.getDepJarElement());
+			versionsEle.add(depJar.geJarConflictEle());
 		}
 
 		Element risksEle = conflictEle.addElement("RiskMethods");

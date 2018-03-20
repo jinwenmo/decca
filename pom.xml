@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>neu.lab</groupId>
-	<artifactId>conflict</artifactId>
+	<artifactId>decca</artifactId>
 	<version>1.0</version>
 	<packaging>maven-plugin</packaging>
 
@@ -34,16 +34,11 @@
 			<version>3.2</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
 			<artifactId>maven-dependency-tree</artifactId>
 			<version>2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.shared</groupId>
-			<artifactId>maven-artifact-transfer</artifactId>
-			<version>0.9.1</version>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.codehaus.plexus</groupId>
 			<artifactId>plexus-utils</artifactId>
@@ -82,7 +77,7 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.2</version>
 				<configuration>
-					<goalPrefix>conflict</goalPrefix>
+					<goalPrefix>decca</goalPrefix>
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 				</configuration>
 				<executions>
